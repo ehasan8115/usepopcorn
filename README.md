@@ -2,7 +2,7 @@
 
 ### [Live Site](https://usepopcorn-reactjs.netlify.app/)
 
-![usePopcorn](https://github.com/ehasan8115/Secrets-Authentication/blob/master/public/images/secrets-home.png?raw=true)
+![usePopcorn](https://github.com/ehasan8115/usepopcorn/blob/abf29c7597090ccef32a62c237d62071bcffbc0f/public/usepopcorn.png)
 
 ## Overview
 
@@ -24,12 +24,3 @@ usePopcorn is a React-based web application that allows users to search for movi
 - LocalStorage: The `useLocalStorageState` hook is used to store watched movies in the browser's Local Storage.
 - Custom Hooks: Custom hooks like `useKey` and `useMovies` are used for specific functionalities.
 - [OMDb API](https://www.omdbapi.com/): The Open Movie Database API is used for fetching movie data.
-
-## Installation
-
-To run the Movie Tracker App locally, follow these steps:
-
-1. Clone this repository to your local machine.
-2. Navigate to the project directory in your terminal.
-3. Install dependencies using `npm install` or `yarn install`.
-4. Create a `.env` file in the project root directory and add your OMDb API key as follows:
