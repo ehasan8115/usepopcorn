@@ -13,12 +13,26 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const { movies, isLoading, error } = useMovies(query);
-
   const [watched, setWatched] = useLocalStorageState([], "watched");
 
   function handleSelectMovie(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
+  
+    // Check if the screen width is less than a certain value (e.g., 768 pixels, which is a common threshold for mobile screens).
+    const isMobile = window.innerWidth < 768;
+  
+    if (isMobile) {
+      // Use a setTimeout to ensure the element is in the DOM before scrolling.
+      setTimeout(() => {
+        const detailsElement = document.getElementById("movie-details");
+        if (detailsElement) {
+          detailsElement.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 0);
+    }
   }
+  
+  
 
   function handleCloseMovie() {
     setSelectedId(null);
@@ -31,6 +45,8 @@ export default function App() {
   function handleDeleteWatched(id) {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   }
+
+
 
   return (
     <>
@@ -214,8 +230,9 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
   );
 
   const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
-  const watchedUserRating = watched.find((movie) => movie.imdbID === selectedId)
-    ?.userRating;
+  const watchedUserRating = watched.find(
+    (movie) => movie.imdbID === selectedId
+  )?.userRating;
 
   const {
     Title: title,
@@ -227,7 +244,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     Released: released,
     Actors: actors,
     Director: director,
-    Genre: genre
+    Genre: genre,
   } = movie;
 
   // if (imdbRating > 8) return <p>Greatest ever!</p>;
@@ -256,7 +273,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
-      countRatingDecisions: countRef.current
+      countRatingDecisions: countRef.current,
     };
 
     onAddWatched(newWatchedMovie);
@@ -298,7 +315,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
   );
 
   return (
-    <div className="details">
+    <div id="movie-details" className="details">
       {isLoading ? (
         <Loader />
       ) : (
@@ -359,7 +376,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 function WatchedSummary({ watched }) {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
-  const avgRuntime = average(watched.map((movie) => movie.runtime));
+  const avgRuntime = Math.round(average(watched.map((movie) => movie.runtime)));
 
   return (
     <div className="summary">
